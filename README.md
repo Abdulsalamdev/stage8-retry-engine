@@ -94,24 +94,10 @@ retrying
 completed
 failed
 
-# Architecture Diagram
-Client
-  |
-  | POST /request
-  ↓
-NestJS API Layer
-  ↓
-Prisma Database (Request Table)
-  ↓
-Background Worker (runs every 500ms)
-  ↓
-External API (Mock Service)
-  ↓
-Attempt Table (stores each retry attempt)
- Retry Strategy
- Exponential Backoff
+![Architecture Diagram](docs/screenshorts/system.png)
 
-# Each retry increases delay exponentially:
+
+Each retry increases delay exponentially:
 
 delay = baseBackoff * 2^attempt
 # Why?
