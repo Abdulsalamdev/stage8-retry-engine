@@ -1,4 +1,4 @@
-# 🚀 Retry Engine (Backend Resilience System)
+# Retry Engine (Backend Resilience System)
 
 A production-style retry engine built with **NestJS, Prisma, and SQLite** that demonstrates how real-world systems handle unreliable external APIs using **exponential backoff and jitter**.
 
@@ -6,7 +6,7 @@ This project simulates how services like payment gateways, SMS providers, and th
 
 ---
 
-# 📌 Features
+# Features
 
 - POST `/request` to schedule external HTTP calls
 - Background worker processing every 500ms
@@ -27,7 +27,7 @@ This project simulates how services like payment gateways, SMS providers, and th
 
 ---
 
-# 🧱 Tech Stack
+# Tech Stack
 
 - NestJS (Backend Framework)
 - Prisma ORM
@@ -37,24 +37,31 @@ This project simulates how services like payment gateways, SMS providers, and th
 
 ---
 
-# ⚙️ Setup Instructions
+# Setup Instructions
 
 ## Install dependencies
 ```bash
 npm install
 
-Setup database
+```
+
+# Setup database
+```bash
 npx prisma migrate dev
 npx prisma generate
 Start server
 npm run start:dev
+```
 
-Server runs on:
+# Server runs on:
 
-http://localhost:3000
-📡 API Endpoints
-➤ Create Request
+ http://localhost:3000
+
+
+# API Endpoints
+ Create Request
 POST /request
+```bash
 Request Body
 {
   "url": "http://localhost:3000/mock/fail-3-times",
@@ -63,17 +70,20 @@ Request Body
   "maxRetries": 5,
   "backoffMs": 1000
 }
-Response
+
+Response:
 {
   "id": "uuid",
   "status": "PENDING"
 }
-➤ Get Request by ID
+```
+
+# Get Request by ID
 GET /requests/:id
 
 Returns full request details including retry attempt history.
 
-➤ Get Requests by Status
+Get Requests by Status
 GET /requests?status=failed
 
 Filter requests by status.
@@ -83,7 +93,8 @@ pending
 retrying
 completed
 failed
-🏗️ Architecture Diagram
+
+# Architecture Diagram
 Client
   |
   | POST /request
@@ -100,10 +111,10 @@ Attempt Table (stores each retry attempt)
  Retry Strategy
  Exponential Backoff
 
-Each retry increases delay exponentially:
+# Each retry increases delay exponentially:
 
 delay = baseBackoff * 2^attempt
-Why?
+# Why?
 Prevents overwhelming failing services
 Gives external APIs time to recover
 Avoids cascading system failures
@@ -112,18 +123,13 @@ Avoids cascading system failures
 To avoid synchronized retry spikes:
 
 finalDelay = exponentialBackoff * random(0.8 → 1.2)
-Why?
+
+# Why?
 Prevents "thundering herd problem"
 Spreads retry load over time
 Improves system stability under high failure conditions
-Retry Rules
-Error Type	Retry
-2xx Success	❌ No
-4xx Client Error	❌ No
-5xx Server Error	✅ Yes
-Timeout	✅ Yes
-Network Error	✅ Yes
-🧪 Mock Endpoints (Testing)
+
+# Mock Endpoints (Testing)
 1. Fail 3 times then succeed
 POST /mock/fail-3-times
 
@@ -142,84 +148,59 @@ no retry on 4xx
 3. Always 500 (dead-letter test)
 POST /mock/always-500
 
-Used to test:
-
+# Used to test:
 retry exhaustion
 dead-letter handling
-Database Schema
-Request Table
-id
-url
-method
-body
-status
-attemptCount
-nextRetryAt
-lastError
-result
-maxRetries
-backoffMs
-createdAt
-updatedAt
-Attempt Table
-id
-requestId
-attemptNumber
-statusCode
-error
-delayUsed
-createdAt
-📸 Required Screenshot
 
-# Include a screenshot of:
+# Required Screenshot
 
-# GET /requests/:id
+#  Evidence of Retry System Working
 
-# It should show:
+## 1. Successful retry flow (fail → retry → success)
 
-# multiple attempts
-# retry progression
-# final result (COMPLETED or FAILED)
-
-## 📸 Evidence of Retry System Working
-
-### 1. Successful retry flow (fail → retry → success)
-
-![Success Flow](./docs/screenshots/success-flow.png)
+![Success Flow](../stage8-retry-engine/docs/screenshorts/success-flow.png)
 
 ---
 
 ### 2. 4xx terminal failure (no retry)
 
-![4xx No Retry](./docs/screenshots/4xx-no-retry.png)
+![4xx No Retry](../stage8-retry-engine/docs/screenshorts/4xx-no-retry.png)
 
 ---
 
 ### 3. Max retries reached (dead-letter)
 
-![Dead Letter](./docs/screenshots/dead-letter.png)
-⚠️ Challenges Faced
+![Dead Letter](../stage8-retry-engine/docs/screenshorts/dead-letter.png)
+
+
+# Challenges Faced
 Prisma migration and schema synchronization issues
 Handling axios error responses consistently
 Worker timing and scheduling correctness (500ms loop)
 Correct implementation of exponential backoff formula
 Ensuring retry vs non-retry error separation
-Maintaining database consistency during retries
-📚 What I Learned
+Maintaining database consistency during retries\
+
+
+# What I Learned
 Designing background worker systems
 Retry mechanisms in distributed systems
 Exponential backoff + jitter strategies
 Prisma relational data modeling
 Handling unreliable external APIs
 Building fault-tolerant backend systems
-🔗 Resources Used
+
+
+# Resources Used
 Prisma Docs: https://www.prisma.io/docs
 NestJS Docs: https://docs.nestjs.com
 MDN HTTP Status Codes: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 AWS Architecture Patterns (Backoff strategies)
 StackOverflow discussions on retry mechanisms
 AI-assisted debugging and architecture guidance
-💡 Why This Project Made Me a Better Backend Developer
+
+
+# Why This Project Made Me a Better Backend Developer
 
 This project taught me how real production systems handle failure safely.
 
