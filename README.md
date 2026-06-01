@@ -155,22 +155,21 @@ dead-letter handling
 # Required Screenshot
 
 #  Evidence of Retry System Working
-
 ## 1. Successful retry flow (fail → retry → success)
 
-![Success Flow](../stage8-retry-engine/docs/screenshorts/success-flow.png)
+![Success Flow](docs/screenshorts/success-flow.png)
 
 ---
 
-### 2. 4xx terminal failure (no retry)
+## 2. 4xx terminal failure (no retry)
 
-![4xx No Retry](../stage8-retry-engine/docs/screenshorts/4xx-no-retry.png)
+![4xx No Retry](docs/screenshorts/4xx-no-retry.png)
 
 ---
 
-### 3. Max retries reached (dead-letter)
+## 3. Max retries reached (dead-letter)
 
-![Dead Letter](../stage8-retry-engine/docs/screenshorts/dead-letter.png)
+![Dead Letter](docs/screenshorts/dead-letter.png)
 
 
 # Challenges Faced
