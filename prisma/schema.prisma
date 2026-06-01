@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Request {
+  id            String     @id @default(uuid())
+  url           String
+  method        String
+  body          String?
+  status        String
+  attemptCount  Int        @default(0)
+  nextRetryAt   DateTime?
+  lastError     String?
+  result        String?
+  maxRetries    Int        @default(5)
+  backoffMs     Int        @default(1000)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  attempts      Attempt[]
+}
+
+model Attempt {
+  id             String   @id @default(uuid())
+  requestId      String
+  attemptNumber  Int
+  statusCode     Int?
+  error          String?
+  delayUsed      Int
+  createdAt      DateTime @default(now())
+
+  request Request @relation(fields: [requestId], references: [id])
+}
